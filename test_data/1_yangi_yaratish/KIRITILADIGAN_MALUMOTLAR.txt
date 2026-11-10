@@ -1,0 +1,48 @@
+YANGI OBYEKTIVKA YARATISH — SINOV UCHUN KIRITILADIGAN MA'LUMOTLAR
+(Hamma shaxslar va ma'lumotlar uydirma. Qiymatlarni aynan shunday nusxalab joylashtiring.)
+
+Dasturda: "1. Yangi obyektivka yaratish" tugmasini bosing.
+
+=== 1-varaq: "Asosiy ma'lumot" ===
+F.I.Sh.                          : Йўлдошев Сардор Равшанович
+Joriy ish joyi sanasi            : 2023 йил 10 мартдан:
+Joriy lavozim                    : Олтинкўл тумани ҳокимининг биринчи ўринбосари
+Tug'ilgan yili                   : 15.03.1980
+Tug'ilgan joyi                   : Фарғона вилояти, Қўқон шаҳри
+Millati                          : ўзбек
+Partiyaviyligi                   : Ўзбекистон либерал-демократик партияси аъзоси
+Ma'lumoti                        : олий
+Ma'lumoti bo'yicha mutaxassisligi: иқтисодчи
+Ilmiy darajasi                   : (bo'sh qoldiring -> dastur «йўқ» deb yozadi)
+Ilmiy unvoni                     : (bo'sh qoldiring)
+Biladigan chet tillari           : рус, инглиз тиллари
+Harbiy (maxsus) unvoni           : (bo'sh qoldiring)
+Davlat mukofotlari               : 2019 й. «Шуҳрат» медали
+Tamomlagan o'quv yurti (katak)   : 2002 й. Тошкент давлат иқтисодиёт университети (кундузги)
+
+=== 2-varaq: "Mehnat faoliyati" (har qator alohida) ===
+1998-2002 йй. - Тошкент давлат иқтисодиёт университети талабаси
+2002-2007 йй. - Қўқон шаҳар солиқ инспекцияси етакчи мутахассиси
+2007-2015 йй. - Фарғона вилоят солиқ бошқармаси бўлим бошлиғи
+2015-2023 йй. - Олтинкўл тумани молия бўлими мудири
+2023 й. - ҳ.в. - Олтинкўл тумани ҳокимининг биринчи ўринбосари
+Депутатлик katagi: bo'sh qoldiring.
+
+=== 3-varaq: "Yaqin qarindoshlar" -> "+ Qarindosh qo'shish..." tugmasi bilan 5 ta qarindosh kiriting ===
+Har biri uchun oynada:  Qarindoshligi | F.I.Sh. | Tug'ilgan yili | Tug'ilgan joyi | Holati | (Vafot yili) | Ish joyi va lavozimi | Turar joyi
+
+ 1) Отаси     | Йўлдошев Равшан Эшмуродович | 1952 | Фарғона вилояти, Қўқон шаҳри | Pensiyada | - | Қўқон шаҳар 5-мактаб директори | Фарғона вилояти, Қўқон шаҳри, Беруний кўчаси, 14-уй
+ 2) Онаси     | Йўлдошева (Каримова) Гулчеҳра Азизовна | 1955 | Фарғона вилояти, Қўқон шаҳри | Vafot etgan | 2016 | Қўқон шаҳар 5-мактаб ўқитувчиси | (bo'sh)
+ 3) Турмуш ўртоғи | Йўлдошева (Тошматова) Дилором Ҳамидовна | 1982 | Фарғона вилояти, Марғилон шаҳри | Ishlaydi | - | Олтинкўл тумани тиббиёт бирлашмаси бош ҳамшираси | Андижон вилояти, Олтинкўл тумани, Навбаҳор маҳалласи, 8-уй
+ 4) Ўғли      | Йўлдошев Жасурбек Сардорович | 2005 | Фарғона вилояти, Қўқон шаҳри | Ishlaydi | - | Тошкент давлат техника университети талабаси | Андижон вилояти, Олтинкўл тумани, Навбаҳор маҳалласи, 8-уй
+ 5) Қизи      | Йўлдошева Мадина Сардоровна | 2010 | Фарғона вилояти, Қўқон шаҳри | Ishlaydi | - | Олтинкўл тумани 3-мактаб ўқувчиси | Андижон вилояти, Олтинкўл тумани, Навбаҳор маҳалласи, 8-уй
+
+=== Rasm ===
+"Rasm tanlash (3x4)..." -> shu papkadagi rasm_test.jpg
+
+=== Kutiladigan natija ===
+ - "Standartga keltirish va tekshirish" bosilganda ogohlantirish bo'lmasligi kerak (yoki faqat "Депутатлик" haqida hech nima chiqmasligi kerak).
+ - Qarindoshlar ro'yxati avtomatik tartiblanadi: Отаси, Онаси, Турмуш ўртоғи, Ўғли, Қизи.
+ - "Word'ga saqlash" -> fayl nomi: Йулдошев Сардор Равшанович.docx (ў -> у).
+ - Wordda: 1-sahifada rasm o'ng yuqorida; mehnat faoliyati matnlari bir chiziqdan boshlanadi; 2-sahifada 5 qatorli jadval,
+   onasi qatorida "2016 йил вафот этган (...)" va ish/turar joyi kataklari birlashgan.

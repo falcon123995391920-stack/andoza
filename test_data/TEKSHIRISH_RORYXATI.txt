@@ -1,0 +1,63 @@
+SINOV TO'PLAMI — NIMA QILISH VA NIMA CHIQISHI KERAK
+(Hamma shaxslar va ma'lumotlar uydirma, faqat sinov uchun.)
+
+Dastur: python app.py   yoki   Obyektivka.exe
+
+----------------------------------------------------------------------
+A) 1_yangi_yaratish   ->  "1. Yangi obyektivka yaratish"
+----------------------------------------------------------------------
+  KIRITILADIGAN_MALUMOTLAR.txt dagi qiymatlarni kiriting. Rasm: rasm_test.jpg
+  Kutiladi: ogohlantirishsiz; Word'da 5 qatorli qarindoshlar jadvali; fayl nomi "Йулдошев Сардор Равшанович.docx".
+
+----------------------------------------------------------------------
+B) 2_tahrirlash   ->  "2. Mavjud obyektivkani tahrirlash" (Fayldan yuklash)
+----------------------------------------------------------------------
+  tahrir_1_rasmdagi_holat.docx
+     Sizning rasmingizdagi holat: mukofotlar + "Идоравий мукофотлар" + deputatlik bitta abzatsda, tillarda "Малака даражаси".
+     Kutiladi: 2 ta ogohlantirish (idoraviy mukofotlar qo'shildi; til darajasi olib tashlandi).
+               Tillar -> "рус тили". 4 ta mehnat yozuvi, 4 ta qarindosh.
+  tahrir_2_yorliq_bir_qatorda.docx
+     Har maydon bitta qatorda "Yorliq: qiymat", ism KATTA harflarda, sana "1975 йил 3 март", qarindoshlar erkin matnda.
+     Kutiladi: ism "Хасанов Улуғбек Тоҳирович", sana 03.03.1975, 4 qarindosh (4 ta "avtomatik ajratildi" eslatmasi), 5 mehnat yozuvi.
+  tahrir_3_maydonlar_jadvalda.docx
+     Maydonlar 2 ustunli jadvalda, sana va lavozim bir qatorda, qarindoshlar sarlavhasiz jadvalda.
+     Kutiladi: 0 ogohlantirish, joriy ish joyi sanasi va lavozim alohida maydonlarga ajraladi, 4 qarindosh.
+
+  "Matnni joylash (Ctrl+V)" tugmasi:
+  tahrir_4_matn_joylash.txt  -> ichidagi hamma matnni nusxalab joylang.
+     Kutiladi: ism Қодирова Малика Анваровна, sana 08.07.1979, deputatlik "2019 й. - ҳ.в. - ...", 4 mehnat yozuvi, 4 qarindosh
+               (onasi "2018 йил вафот этган (...)" , turar joyi bo'sh), 1 ta ogohlantirish (til darajasi).
+
+  "Yaqin qarindoshlar" varag'i -> "Matn / Word jadvalidan joylash...":
+  tahrir_5_qarindoshlar_matni.txt  -> # va ### bilan boshlanadigan qatorlarsiz, har blokni alohida joylab ko'ring.
+     Kutiladi: jami 5 qarindosh; "Қизим" -> "Қизи".
+
+----------------------------------------------------------------------
+C) 3_papka_ommaviy   ->  "3. Papkadagi hammasini birdaniga..."  (shu papkani tanlang)
+----------------------------------------------------------------------
+  Natija papkasida 6 ta Word fayl va hisobot.txt hosil bo'ladi.
+     01_Рахматуллаев  : 2 ogohlantirish
+     02_Хасанов       : 4 eslatma (qarindoshlar matndan ajratilgan)
+     03_Тўраева       : 0 ogohlantirish
+     04_Саидов_xatolar: ~13 ogohlantirish (qisqartmalar "Бухоро вил.", "БухДУ", "МТП", "Саидова Н.Ҳ.",
+                        "илгари ... бўлган", yillar orasida bo'shliq, "Вафот этган" yilsiz) — dastur ularni TO'G'RILAMAYDI,
+                        faqat ko'rsatadi (to'g'ri yozilishi xodim tomonidan aniqlanadi).
+                        "Рафиқам" -> "Турмуш ўртоғи", "Ўғлим" -> "Ўғли" avtomatik tuzatiladi.
+     05_Ҳамидова      : 1 ogohlantirish ("qarindoshlar topilmadi")
+     06_Хасанов_...doc: eski .doc format — ogohlantirishsiz (kompyuterda Word yoki LibreOffice kerak)
+
+----------------------------------------------------------------------
+D) Natijani Wordda ko'zdan kechirish (hamma fayl uchun)
+----------------------------------------------------------------------
+  1) "МЕҲНАТ ФАОЛИЯТИ" matnlari (ҳ.в. qatori ham) bir vertikal chiziqdan boshlanadi.
+  2) Ikkinchi ustun ("Туғилган жойи:", "Партиявийлиги:" ...) hamma qatorda bir chiziqda.
+  3) Rasm o'ng yuqorida, lavozim matni rasmga tegmaydi.
+  4) 2-sahifa: vafot etgan qarindoshda ish va turar joyi kataklari birlashgan.
+  5) Sahifa: A4, chegaralar: yuqori 1,5 / past 1 / o'ng 1 / chap 2 sm; shrift Times New Roman 11 (sarlavhalar 14).
+
+=== SAYT UCHUN ESLATMA ===
+Yangi yaratish: 1_yangi_yaratish/KIRITILADIGAN_MALUMOTLAR.txt dagilarni inputlarga kiriting, rasm_test.jpg ni tanlang.
+Tahrirlash: 2_tahrirlash dagi fayllarni tashlang; .txt larning matnini "Matn" maydoniga joylang.
+  tahrir_5_qarindoshlar_matni.txt -> Yangi yaratishdagi "Matndan qo'shish" ga.
+Ko'p fayl: 3_papka_ommaviy dagi hamma fayllarni tanlang.
+Tekshiring: 1-betda jadval qoldig'i (katak chiziqlari, ¤ belgisi) YO'Q bo'lishi kerak.

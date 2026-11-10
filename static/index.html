@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f2f2f7">
+<link rel="icon" type="image/svg+xml" href="/static/logo.svg">
+  <title>Андоза</title>
+<script src="/static/theme.js"></script>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<!-- ===================== KIRISH SAHIFASI ===================== -->
+<div id="landing" class="view on">
+  <div class="mesh"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i></div>
+  <header class="l-top">
+    <div class="logo"><img class="logo-mark" src="/static/logo.svg" alt="" width="32" height="32"><span data-i18n="brand"></span></div>
+    <div class="tools"><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
+  </header>
+
+  <div class="l-main">
+    <div class="l-txt">
+      <span class="pill"><i class="dot"></i><span data-i18n="pill"></span></span>
+      <h1 class="big"><span data-i18n="h1a"></span><br><em data-i18n="h1b"></em> <span data-i18n="h1c"></span></h1>
+      <p class="lead" data-i18n="lead"></p>
+      <ul class="feat">
+        <li><b>1</b><span data-i18n="f1"></span></li>
+        <li><b>2</b><span data-i18n="f2"></span></li>
+        <li><b>3</b><span data-i18n="f3"></span></li>
+      </ul>
+      <div class="cta">
+        <a class="btn primary xl" href="#app" id="start"><span data-i18n="start"></span> <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+      </div>
+    </div>
+
+    <div class="scene" aria-hidden="true">
+      <div class="phone">
+        <div class="notch"></div>
+        <div class="screen">
+          <div class="sheet">
+            <div class="ln t"></div><div class="ln t2"></div>
+            <div class="ln l1"></div><div class="ln l2"></div><div class="ln l3"></div><div class="ln l4"></div><div class="ln l5"></div><div class="ln l6"></div>
+            <div class="check">✓</div>
+          </div>
+        </div>
+      </div>
+      <div class="gbadge g1"><span>✓</span><em data-i18n="g1"></em></div>
+      <div class="gbadge g2"><span>⇥</span><em data-i18n="g2"></em></div>
+      <div class="gbadge g3"><span>⬇</span><em data-i18n="g3"></em></div>
+    </div>
+  </div>
+
+  <footer class="l-foot">
+    <div class="author">
+      <img src="/static/muallif.jpg" alt="" width="44" height="44">
+      <div><b data-i18n="author"></b><span data-i18n="author_role"></span></div>
+    </div>
+  </footer>
+</div>
+
+<!-- ===================== ILOVA ===================== -->
+<div id="app" class="view">
+  <header class="bar-top">
+    <a class="logo" href="#" data-i18n-aria="home"><img class="logo-mark" src="/static/logo.svg" alt="" width="32" height="32"><span class="logo-t" data-i18n="brand"></span></a>
+    <nav class="seg" id="tabs" role="tablist">
+      <button role="tab" data-tab="new" class="on" data-i18n="t_new"></button>
+      <button role="tab" data-tab="edit" data-i18n="t_edit"></button>
+      <button role="tab" data-tab="batch" data-i18n="t_batch"></button>
+    </nav>
+    <div class="tools"><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
+  </header>
+
+  <main class="stage-wrap">
+    <section id="edit-loader" class="panel hidden">
+      <div class="panel-in center">
+        <h2 data-i18n="e_title"></h2>
+        <p class="hint" data-i18n="e_hint"></p>
+        <div class="grid2">
+          <label class="drop" id="drop">
+            <input type="file" id="edit-file" accept=".docx,.doc,.txt" hidden>
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M7 9l5-5 5 5M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+            <b data-i18n="drop1"></b>
+            <span data-i18n="drop2"></span>
+          </label>
+          <div class="paste-box">
+            <textarea id="edit-text" rows="6" data-i18n-ph="e_ph"></textarea>
+            <button class="btn primary" id="edit-text-go" type="button" data-i18n="e_go"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="editor" class="editor">
+      <aside class="rail" id="rail">
+        <button class="rs on" data-step="0"><i>1</i><span data-i18n="r_basic"></span></button>
+        <button class="rs" data-step="1"><i>2</i><span data-i18n="r_pers"></span></button>
+        <button class="rs" data-step="2"><i>3</i><span data-i18n="r_edu"></span></button>
+        <button class="rs" data-step="3"><i>4</i><span data-i18n="r_work"></span></button>
+        <button class="rs" data-step="4"><i>5</i><span data-i18n="r_rel"></span></button>
+        <button class="rs mob-only" data-step="5"><i>✓</i><span><span data-i18n="r_fin"></span><span id="fin-cnt"></span></span></button>
+        <div class="rail-foot"><button class="btn small ghost" type="button" id="clear" data-i18n="clear"></button></div>
+      </aside>
+
+      <section class="stage" id="stage">
+        <form id="form" autocomplete="off" onsubmit="return false">
+          <div class="pane on" data-pane="0">
+            <h2 data-i18n="p_basic"></h2>
+            <div class="with-photo">
+              <div class="photo">
+                <div class="photo-box" id="photo-box"><span data-i18n="photo"></span></div>
+                <input type="file" id="photo-file" accept="image/jpeg,image/png" hidden>
+                <button class="btn small" type="button" id="photo-pick" data-i18n="photo_pick"></button>
+                <button class="btn small ghost hidden" type="button" id="photo-del" data-i18n="photo_del"></button>
+              </div>
+              <div class="fields">
+                <label class="f"><span data-i18n="l_fio"></span>
+                  <input id="fio" placeholder="Рахматуллаев Жасур Бахтиёрович"></label>
+                <label class="f"><span data-i18n="l_position"></span>
+                  <textarea id="position" rows="2" placeholder="Жиззах вилояти Зарбдор тумани ҳокимининг ўринбосари - …"></textarea></label>
+                <label class="f narrow"><span data-i18n="l_job"></span>
+                  <input id="job_date" class="date" inputmode="numeric" data-i18n-ph="datefmt">
+                  <small id="job_preview" class="prev"></small></label>
+              </div>
+            </div>
+          </div>
+          <div class="pane" data-pane="1">
+            <h2 data-i18n="p_pers"></h2>
+            <div class="grid3">
+              <label class="f"><span data-i18n="l_birth"></span><input id="birth_date" class="date" inputmode="numeric" data-i18n-ph="datefmt"></label>
+              <label class="f span2"><span data-i18n="l_bplace"></span><input id="birth_place" placeholder="Наманган вилояти, Тўрақўрғон тумани"></label>
+              <label class="f"><span data-i18n="l_nat"></span><input id="nationality" list="dl-nat" placeholder="ўзбек"></label>
+              <label class="f span2"><span data-i18n="l_party"></span><input id="party" list="dl-party" placeholder="йўқ"></label>
+              <label class="f"><span data-i18n="l_edu"></span><input id="education" list="dl-edu" placeholder="олий"></label>
+              <label class="f span2"><span data-i18n="l_spec"></span><input id="specialty" placeholder="иқтисодчи"></label>
+              <label class="f"><span data-i18n="l_deg"></span><input id="degree" list="dl-deg" placeholder="йўқ"></label>
+              <label class="f"><span data-i18n="l_ttl"></span><input id="title" list="dl-title" placeholder="йўқ"></label>
+              <label class="f"><span data-i18n="l_mil"></span><input id="military" placeholder="йўқ"></label>
+            </div>
+            <fieldset class="f langs">
+              <legend data-i18n="l_langs"></legend>
+              <div id="langs" class="chips"></div>
+              <input id="langs_other" data-i18n-ph="langs_other">
+            </fieldset>
+          </div>
+          <div class="pane" data-pane="2">
+            <h2 data-i18n="p_edu"></h2>
+            <div class="grid2">
+              <div>
+                <h3 data-i18n="h_grad"></h3>
+                <div id="grad-rows" class="rows"></div>
+                <button class="btn small" type="button" data-add="grad" data-i18n="add_grad"></button>
+              </div>
+              <div>
+                <h3><span data-i18n="h_award"></span> <small data-i18n="empty_none"></small></h3>
+                <div id="award-rows" class="rows"></div>
+                <button class="btn small" type="button" data-add="award" data-i18n="add_award"></button>
+              </div>
+            </div>
+            <h3 class="mt"><span data-i18n="h_dep"></span> <small data-i18n="empty_none"></small></h3>
+            <div id="deputy-rows" class="rows"></div>
+            <button class="btn small" type="button" data-add="deputy" data-i18n="add_row"></button>
+          </div>
+          <div class="pane" data-pane="3">
+            <h2 data-i18n="p_work"></h2>
+            <p class="hint" data-i18n="work_hint"></p>
+            <div id="work-rows" class="rows"></div>
+            <button class="btn small" type="button" data-add="work" data-i18n="add_work"></button>
+          </div>
+          <div class="pane" data-pane="4">
+            <h2 data-i18n="p_rel"></h2>
+            <div class="quick" id="rel-quick"><span data-i18n="quick"></span></div>
+            <div id="rel-rows" class="rels"></div>
+            <details class="paste">
+              <summary data-i18n="rel_paste"></summary>
+              <textarea id="rel-text" rows="4" data-i18n-ph="rel_ph"></textarea>
+              <button class="btn small" type="button" id="rel-text-go" data-i18n="rel_add_go"></button>
+            </details>
+          </div>
+        </form>
+        <div class="navbar">
+          <button class="btn" type="button" id="prev" data-i18n="back"></button>
+          <span class="dots" id="dots"></span>
+          <button class="btn primary" type="button" id="next" data-i18n="next"></button>
+        </div>
+      </section>
+
+      <aside class="side" id="side">
+        <div class="side-in">
+          <h2><span data-i18n="w_title"></span><span class="count" id="wcount">0</span></h2>
+          <div id="warn" class="warn"><p class="ok" data-i18n="w_empty"></p></div>
+        </div>
+        <div class="side-act">
+          <label class="f dlang"><span data-i18n="dl_lang"></span><select class="doclang" id="doclang"></select></label>
+          <button class="btn primary big" id="download" type="button" data-i18n="dl"></button>
+          <p class="hint" id="dl-msg"></p>
+        </div>
+      </aside>
+    </div>
+
+    <section id="batch" class="panel hidden">
+      <div class="panel-in">
+        <h2 data-i18n="b_title"></h2>
+        <p class="hint" data-i18n="b_hint"></p>
+        <label class="f dlang"><span data-i18n="dl_lang"></span><select class="doclang" id="b-doclang"></select></label>
+        <div class="row-btns">
+          <label class="btn"><span data-i18n="b_files"></span><input type="file" id="b-files" multiple accept=".docx,.doc" hidden></label>
+          <label class="btn"><span data-i18n="b_dir"></span><input type="file" id="b-dir" webkitdirectory hidden></label>
+          <button class="btn primary" id="b-go" type="button" disabled data-i18n="b_go"></button>
+          <button class="btn" id="b-zip" type="button" disabled data-i18n="b_zip"></button>
+        </div>
+        <div class="bar hidden" id="b-bar"><i id="b-bar-in"></i></div>
+        <p class="hint" id="b-info"></p>
+        <ul class="blist" id="b-list"></ul>
+      </div>
+    </section>
+  </main>
+</div>
+
+<datalist id="dl-nat"><option value="ўзбек"><option value="қорақалпоқ"><option value="тожик"><option value="қозоқ"><option value="рус"><option value="татар"><option value="қирғиз"><option value="тюрк"><option value="уйғур"></datalist>
+<datalist id="dl-party"><option value="йўқ"><option value="Ўзбекистон либерал-демократик партияси аъзоси"><option value="Ўзбекистон Миллий тикланиш демократик партияси аъзоси"><option value="Ўзбекистон Халқ демократик партияси аъзоси"><option value="«Адолат» социал-демократик партияси аъзоси"><option value="«Экологик партия» аъзоси"></datalist>
+<datalist id="dl-edu"><option value="олий"><option value="ўрта махсус"><option value="ўрта"><option value="тугалланмаган олий"></datalist>
+<datalist id="dl-deg"><option value="йўқ"><option value="иқтисод фанлари номзоди"><option value="иқтисод фанлари доктори"><option value="фалсафа доктори (PhD)"><option value="фан доктори (DSc)"></datalist>
+<datalist id="dl-title"><option value="йўқ"><option value="доцент"><option value="профессор"><option value="катта илмий ходим"></datalist>
+
+<div id="toast" class="toast hidden" role="status"></div>
+<script src="/static/i18n.js"></script>
+<script src="/static/app.js"></script>
+</body>
+</html>

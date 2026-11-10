@@ -1,0 +1,27 @@
+OBYEKTIVKA SAYTI
+================
+Ishga tushirish (bitta kompyuterda):
+  1. Python o'rnatilgan bo'lsin (python.org, "Add Python to PATH").
+  2. ishga_tushirish.bat ni ikki marta bosing -> brauzerda http://127.0.0.1:8000 ochiladi.
+
+Uchta rejim (tepada):
+  Yangi yaratish  - hamma ma'lumot inputlar orqali kiritiladi (qarindoshlar ham: karta + "Tez qo'shish" tugmalari,
+                    yoki "Matndan qo'shish" - Word jadvalidan nusxa/erkin matn).
+  Tahrirlash      - .docx/.doc/.txt faylni tashlang yoki matn joylang -> shaklga to'ladi, tekshirib, yuklab olasiz.
+  Ko'p fayl       - fayllar yoki butun papka -> bitta ZIP (tayyor fayllar + hisobot.txt).
+O'ng tomonda "Tekshiruv": namunadagi "Изоҳ" qoidalari bo'yicha ogohlantirishlar.
+Rasm - 3x4, o'ng yuqorida (fayldagi rasm tahrirlashda avtomatik olinadi).
+
+Idorada boshqalar ham ochishi uchun: tarmoq_uchun.bat (avval ichidagi parolni almashtiring).
+Internetga qo'yish (hosting): Python qo'llab-quvvatlaydigan server kerak: gunicorn server:application.
+  MUHIM: parol (OBJ_PASSWORD) va HTTPS majburiy - hujjatlarda shaxsiy ma'lumotlar bor.
+  Server hech narsani diskda saqlamaydi (vaqtinchalik fayllar o'chiriladi).
+.doc (eski format) o'qish uchun kompyuterda LibreOffice yoki Microsoft Word bo'lishi kerak.
+
+Sinov uchun fayllar: test_data papkasi (TEKSHIRISH_RORYXATI.txt ga qarang).
+
+TILLAR: tepada o'ng burchakdagi tugma orqali 4 til: O'zbekcha (lotin), Ўзбекча (кирилл), Русский, English. Tanlov eslab qolinadi.
+
+
+HUJJAT TILI: standart — o'zbek kirill. Dastur tilini o'zgartirsangiz, Word hujjat ham shu tilda chiqadi (Ўзбекча / O'zbekcha / Русский / English). Istasangiz, yon paneldagi "Hujjat tili" ro'yxatidan alohida tanlang (papka rejimida ham bor).
+Ikkala yil (masalan 2025-2025) endi Wordga to'liq yoziladi.

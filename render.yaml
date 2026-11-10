@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: obyektivka
+    runtime: docker
+    plan: free
+    envVars:
+      - key: OBJ_PASSWORD
+        sync: false
+      - key: OBJ_USER
+        value: admin
