@@ -37,7 +37,7 @@ function K(key, uz, ru, en, cy) { D[key] = { uz, ru, en, cy: cy || null }; }
 
 /* ---------- kirish sahifasi ---------- */
 K("brand", "Andoza", "Андоза", "Andoza", "Андоза");
-K("tagline", "Obyektivka — bir standartda", "Объективка — по единому стандарту", "Official bios — one standard", "Объективка — бир стандартда");
+K("tagline", "Obyektivka tayyorlash endi juda oson!", "Подготовить объективку теперь очень просто!", "Creating an official bio is now easier than ever!", "Объективка тайёрлаш энди жуда осон!");
 K("pill", "Namunaga 100% mos", "100% соответствие образцу", "Matches the sample 100%");
 K("h1a", "Obyektivka —", "Объективка —", "Obyektivka —", "Объективка —");
 K("h1b", "bir bosishda", "в один клик", "in one click");
