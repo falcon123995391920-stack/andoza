@@ -25,3 +25,4 @@ TILLAR: tepada o'ng burchakdagi tugma orqali 4 til: O'zbekcha (lotin), Ўзбе�
 
 HUJJAT TILI: standart — o'zbek kirill. Dastur tilini o'zgartirsangiz, Word hujjat ham shu tilda chiqadi (Ўзбекча / O'zbekcha / Русский / English). Istasangiz, yon paneldagi "Hujjat tili" ro'yxatidan alohida tanlang (papka rejimida ham bor).
 Ikkala yil (masalan 2025-2025) endi Wordga to'liq yoziladi.
+YANGI LOTIN ALIFBOSI: O'zbekcha (lotin) interfeys va hujjatda ş ç ğ ö harflari ishlatiladi (sh→ş, ch→ç, g'→ğ, o'→ö). Matn eski yoki yangi yozuvda kiritilsa ham tushuniladi.

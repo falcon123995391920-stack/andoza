@@ -1,6 +1,6 @@
 "use strict";
 /* Tillar: uz (lotin), cy (o'zbek kirill), ru, en. Kirill varianti lotin matndan avtomatik olinadi; {…} ichi o'zgarmaydi. */
-const LANG_LIST = [["uz", "UZ", "O'zbekcha"], ["cy", "ЎЗ", "Ўзбекча"], ["ru", "RU", "Русский"], ["en", "EN", "English"]];
+const LANG_LIST = [["uz", "UZ", "Özbekça"], ["cy", "ЎЗ", "Ўзбекча"], ["ru", "RU", "Русский"], ["en", "EN", "English"]];
 const HTML_LANG = { uz: "uz", cy: "uz-Cyrl", ru: "ru", en: "en" };
 let LANG = "cy";
 
@@ -201,9 +201,33 @@ const LGMAP = [["рус", "rus", "русский", "Russian"], ["инглиз", 
   ["япон", "yapon", "японский", "Japanese"], ["корейс", "koreys", "корейский", "Korean"]];
 LGMAP.forEach(([c, u, r, e]) => K("lg_" + c, u, r, e, c));
 
+/* Yangi o'zbek lotin alifbosi: o'→ö, g'→ğ, sh→ş, ch→ç (manba matn eski yozuvda; kirill tarjima shundan olinadi). */
+function newAlpha(s) {
+  return s.split(/(\{[^}]*\}|%[a-z_]+%)/).map(p => (p[0] === "{" || p[0] === "%") ? p : p
+    .replace(/([oO])[ʻʼ'’‘`]/g, (m, c) => c === "o" ? "ö" : "Ö")
+    .replace(/([gG])[ʻʼ'’‘`]/g, (m, c) => c === "g" ? "ğ" : "Ğ")
+    .replace(/[sS][hH]/g, m => m === "sh" ? "ş" : m === "SH" ? "Ş" : "Ş")
+    .replace(/[cC][hH]/g, m => m === "ch" ? "ç" : "Ç")
+    .replace(/(\p{L})['’ʻ‘`](?=\p{L})/gu, "$1ʼ")).join("");
+}
+const CL = { а: "a", б: "b", в: "v", г: "g", д: "d", ё: "yo", ж: "j", з: "z", и: "i", й: "y", к: "k", л: "l", м: "m", н: "n", о: "o", п: "p", р: "r", с: "s", т: "t", у: "u", ф: "f", х: "x", ц: "ts", ч: "ç", ш: "ş", щ: "şç", ъ: "ʼ", ы: "i", ь: "", э: "e", ю: "yu", я: "ya", ў: "ö", қ: "q", ғ: "ğ", ҳ: "h", е: "e" };
+function cyrToLat(s) {
+  return s.replace(/[А-Яа-яЁёЎўҚқҒғҲҳ]+/g, w => {
+    const lo = w.toLowerCase(), all = w.length > 1 && w === w.toUpperCase();
+    let out = "";
+    for (let i = 0; i < lo.length; i++) {
+      let c = lo[i], r;
+      if (c === "е") r = (i === 0 || "аеёиоуўэюяыъь".includes(lo[i - 1])) ? "ye" : "e"; else r = CL[c] !== undefined ? CL[c] : c;
+      if (w[i] !== lo[i]) r = all ? r.toUpperCase() : r[0].toUpperCase() + r.slice(1);
+      out += r;
+    }
+    return out;
+  });
+}
 function t(key, vars) {
   const e = D[key]; if (!e) return key;
   let s = LANG === "cy" ? (e.cy || translit(e.uz)) : (e[LANG] || e.uz).replace(/\{([^}]*)\}/g, "$1");
+  if (LANG === "uz") s = cyrToLat(newAlpha(e.uz.replace(/\{([^}]*)\}/g, "$1")));
   if (vars) for (const k in vars) s = s.split("%" + k + "%").join(vars[k]);
   return s;
 }
@@ -212,6 +236,15 @@ function applyI18n(root) {
   const all = (sel) => { const a = [...root.querySelectorAll(sel)]; if (root.matches && root.matches(sel)) a.unshift(root); return a; };
   all("[data-i18n]").forEach(el => { el.textContent = t(el.dataset.i18n); });
   all("[data-i18n-ph]").forEach(el => { el.placeholder = t(el.dataset.i18nPh); });
+  all("input[placeholder],textarea[placeholder]").forEach(el => {
+    if (el.dataset.i18nPh) return;
+    if (el.dataset.ph0 === undefined) el.dataset.ph0 = el.getAttribute("placeholder");
+    el.placeholder = LANG === "uz" ? cyrToLat(el.dataset.ph0) : el.dataset.ph0;
+  });
+  all("datalist option").forEach(o => {
+    if (o.dataset.v0 === undefined) o.dataset.v0 = o.value;
+    o.value = LANG === "uz" ? cyrToLat(o.dataset.v0) : o.dataset.v0;
+  });
   all("[data-i18n-aria]").forEach(el => { el.setAttribute("aria-label", t(el.dataset.i18nAria)); el.title = t(el.dataset.i18nAria); });
 }
 function detectLang() {

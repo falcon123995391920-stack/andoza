@@ -13,11 +13,11 @@ LANGS = ("cy", "uz", "ru", "en")
 # ------------------------------------------------------------ yozuv o'girish
 _CYR_L = {"а": "a", "б": "b", "в": "v", "г": "g", "д": "d", "ё": "yo", "ж": "j", "з": "z", "и": "i", "й": "y",
           "к": "k", "л": "l", "м": "m", "н": "n", "о": "o", "п": "p", "р": "r", "с": "s", "т": "t", "у": "u",
-          "ф": "f", "х": "x", "ц": "ts", "ч": "ch", "ш": "sh", "щ": "shch", "ъ": "ʼ", "ы": "i", "ь": "",
-          "э": "e", "ю": "yu", "я": "ya", "ў": "oʻ", "қ": "q", "ғ": "gʻ", "ҳ": "h", "е": "e"}
+          "ф": "f", "х": "x", "ц": "ts", "ч": "ç", "ш": "ş", "щ": "şç", "ъ": "ʼ", "ы": "i", "ь": "",
+          "э": "e", "ю": "yu", "я": "ya", "ў": "ö", "қ": "q", "ғ": "ğ", "ҳ": "h", "е": "e"}
 _CYR_VOWELS = set("аеёиоуўэюяы")
 _CYR_WORD = re.compile(r"[А-Яа-яЁёЎўҚқҒғҲҳ]+")
-_LAT_WORD = re.compile(r"[A-Za-z]+(?:['’ʻʼ‘`][A-Za-z]+)*['’ʻʼ‘`]?")
+_LAT_WORD = re.compile(r"[A-Za-zŞşÇçÖöĞğ]+(?:['’ʻʼ‘`][A-Za-zŞşÇçÖöĞğ]+)*['’ʻʼ‘`]?")
 _KEEP_LATIN = {"phd", "dsc", "mba", "it", "id", "ceo", "sms", "wifi", "pc", "usa", "ai", "ngo", "ok"}
 
 
@@ -54,6 +54,8 @@ def _lat_word_to_cyr(w: str) -> str:
     while i < len(s):
         c = s[i]; lo = c.lower(); up = c.isupper(); n = s[i + 1].lower() if i + 1 < len(s) else ""
         n2 = s[i + 2] if i + 2 < len(s) else ""
+        if lo in "şçöğ":
+            out.append(cap({"ş": "ш", "ç": "ч", "ö": "ў", "ğ": "ғ"}[lo], up)); i += 1; continue
         if lo in "og" and n and n in apos:
             out.append(cap("ў" if lo == "o" else "ғ", up)); i += 2; continue
         if lo == "s" and n == "h": out.append(cap("ш", up)); i += 2; continue
@@ -178,9 +180,9 @@ def _ix(lang):
 def _tr_period(s: str, lang: str) -> str:
     """Davr / yil qo'shimchalari: yy., й., ҳ.в."""
     ru = lang == "ru"
-    s = re.sub(r"(\d{4})-(\d{4}) йй\.", (r"\1-\2 гг." if ru else r"\1-\2"), s)
-    s = re.sub(r"(\d{4}) й\.(\s+)-(\s+)ҳ\.в\.", (r"\1 г.\2-\3н.в." if ru else r"\1\2-\3present"), s)
-    s = re.sub(r"^(\d{4}) й\.$", (r"\1 г." if ru else r"\1"), s)
+    s = re.sub(r"(\d{4})-(\d{4}) йй\.", (r"\1-\2 гг." if ru else r"\1-\2 yrs."), s)
+    s = re.sub(r"(\d{4}) й\.(\s+)-(\s+)ҳ\.в\.", (r"\1 г.\2-\3н.в." if ru else r"\1 yr.\2-\3present"), s)
+    s = re.sub(r"^(\d{4}) й\.$", (r"\1 г." if ru else r"\1 yr."), s)
     return s
 
 
@@ -230,7 +232,7 @@ def _tr_rel_work(s: str, lang: str) -> str:
 
 def _tr_rel_birth(s: str, lang: str) -> str:
     ru = lang == "ru"
-    return re.sub(r"^(\d{4}) йил\s*,?\s*", (r"\1 г., " if ru else r"\1, "), s or "")
+    return re.sub(r"^(\d{4}) йил\s*,?\s*", (r"\1 г., " if ru else r"\1 yr., "), s or "")
 
 
 def _break_status(s: str) -> str:
