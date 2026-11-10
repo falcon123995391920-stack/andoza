@@ -1,0 +1,33 @@
+GOOGLE ORQALI KIRISH VA ADMIN PANELNI SOZLASH (Render)
+=======================================================
+
+1) BAZA (Neon, bepul)
+   - neon.tech ga Google bilan kiring -> New Project (nom: andoza, region: yaqin, masalan Frankfurt).
+   - "Connection string" ni nusxalang (postgresql://... ko'rinishida). Bu DATABASE_URL.
+
+2) GOOGLE KIRISH (Client ID)
+   - console.cloud.google.com -> yangi project (andoza).
+   - APIs & Services -> OAuth consent screen: External, ilova nomi "Andoza", o'z emailingiz. (Test rejimida "Test users" ga ruxsat berilgan emaillarni qo'shing,
+     yoki "Publish app" qilsangiz hamma Google akkaunti kira oladi.)
+   - Credentials -> Create credentials -> OAuth client ID -> Web application.
+       Authorized JavaScript origins:  https://andoza.onrender.com
+     (Redirect URI kerak emas.)  -> Create -> "Client ID" ni nusxalang (....apps.googleusercontent.com).
+
+3) RENDER -> andoza -> Environment -> quyidagilarni qo'shing:
+   GOOGLE_CLIENT_ID   = (2-qadamdagi Client ID)
+   SUPER_ADMIN_EMAIL  = (sizning Gmail manzilingiz — super admin shu bo'ladi)
+   DATABASE_URL       = (1-qadamdagi Neon manzili)
+   SESSION_SECRET     = (uzun tasodifiy matn, masalan 40 ta harf/raqam)
+   OBJ_PASSWORD       = O'CHIRIB TASHLANG (endi kerak emas, aks holda brauzer alohida parol so'raydi)
+   -> Save, Render o'zi qayta ishga tushadi.
+
+4) TEKSHIRISH
+   - Saytni oching, forma to'ldirib "Word yuklab olish" ni bosing -> Google bilan kirish oynasi chiqadi.
+   - Super admin emailingiz bilan kiring -> tepada avatar -> "Admin panel".
+   - Admin panelda: jami foydalanuvchi, hozir faol, bugun kirgan, yuklashlar; bloklash, tasdiqlash, admin qo'shish (faqat super admin).
+
+ESLATMALAR
+ - DATABASE_URL qo'yilmasa baza Render diskida turadi va qayta ishga tushganda o'chadi (faqat sinov uchun).
+ - Bazada obyektivka mazmuni saqlanmaydi, faqat email, ism, rasm, rol va hisoblagichlar.
+ - Kompyuterda sinash: DEV_LOGIN=1 va SUPER_ADMIN_EMAIL=siz@gmail.com bilan ishga tushirsangiz, Google'siz email bilan kirish chiqadi.
+   DEV_LOGIN ni Render'ga HECH QACHON qo'ymang.

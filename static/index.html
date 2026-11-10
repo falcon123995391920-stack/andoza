@@ -16,7 +16,7 @@
   <div class="mesh"><i class="blob b1"></i><i class="blob b2"></i><i class="blob b3"></i></div>
   <header class="l-top">
     <div class="logo"><img class="logo-mark" src="/static/logo.svg" alt="" width="32" height="32"><span data-i18n="brand"></span></div>
-    <div class="tools"><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
+    <div class="tools"><div class="user-slot"></div><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
   </header>
 
   <div class="l-main">
@@ -68,7 +68,7 @@
       <button role="tab" data-tab="edit" data-i18n="t_edit"></button>
       <button role="tab" data-tab="batch" data-i18n="t_batch"></button>
     </nav>
-    <div class="tools"><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
+    <div class="tools"><div class="user-slot"></div><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
   </header>
 
   <main class="stage-wrap">
@@ -225,6 +225,37 @@
 
 <div id="toast" class="toast hidden" role="status"></div>
 <script src="/static/i18n.js"></script>
+<!-- ===================== ADMIN ===================== -->
+<div id="admin" class="view">
+  <header class="bar-top">
+    <a class="logo" href="#app"><img class="logo-mark" src="/static/logo.svg" alt="" width="32" height="32"><span class="logo-t" data-i18n="brand"></span></a>
+    <h2 class="ad-h" data-i18n="ad_title"></h2>
+    <div class="tools"><button class="btn small" id="ad-back" type="button" data-i18n="ad_back"></button><div class="user-slot"></div><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
+  </header>
+  <main class="ad-wrap">
+    <div id="ad-stats" class="ad-stats"></div>
+    <div class="panel ad-tools">
+      <label class="switch"><input type="checkbox" id="ad-appr"><span data-i18n="ad_appr"></span></label>
+      <div id="ad-addbox" class="addbox hidden"><input id="ad-email" type="email" placeholder="admin@gmail.com" data-i18n-ph="ad_addadm"><button class="btn" id="ad-add" type="button" data-i18n="ad_add"></button></div>
+    </div>
+    <div class="panel" id="ad-list"></div>
+  </main>
+</div>
+
+<!-- ===================== KIRISH OYNASI ===================== -->
+<div id="login" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <button class="icon-btn modal-x" id="login-close" type="button" aria-label="×">×</button>
+    <img class="logo-mark big" src="/static/logo.svg" alt="" width="56" height="56">
+    <h2 data-i18n="a_title"></h2>
+    <p class="hint" data-i18n="a_sub"></p>
+    <div id="g-btn" class="g-btn"></div>
+    <div id="login-dev" class="hidden devbox"><input id="dev-email" type="email" placeholder="test@example.com"><button class="btn" id="dev-go" type="button">Dev</button></div>
+    <p id="login-msg" class="login-msg"></p>
+  </div>
+</div>
+
 <script src="/static/app.js"></script>
+<script src="/static/auth-ui.js"></script>
 </body>
 </html>

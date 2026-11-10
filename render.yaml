@@ -1,10 +1,14 @@
 services:
   - type: web
-    name: obyektivka
+    name: andoza
     runtime: docker
     plan: free
     envVars:
-      - key: OBJ_PASSWORD
+      - key: GOOGLE_CLIENT_ID
         sync: false
-      - key: OBJ_USER
-        value: admin
+      - key: SUPER_ADMIN_EMAIL
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: SESSION_SECRET
+        generateValue: true

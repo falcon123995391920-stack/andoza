@@ -65,6 +65,7 @@ function setLang(l, silent) {
   renderWarn(lastWarn.ws, lastWarn.empty);
   if (typeof runCheck === "function" && !lastWarn.empty) runCheck();
   updNav();
+  if (typeof authLang === "function") authLang();
 }
 
 /* ---------------- yordamchilar ---------------- */
@@ -247,6 +248,9 @@ async function api(path, body) {
   let r;
   try { r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
   catch (e) { throw new Error(L("e_net")); }
+  if ((r.status === 401 || r.status === 403) && typeof handleAuthFail === "function") {
+    if (await handleAuthFail(r)) return api(path, body);
+  }
   if (r.status === 401) throw new Error(L("e_auth"));
   if (!r.ok) { let m = L("e_gen", { code: r.status }); try { m = (await r.json()).error || m; } catch (e) {} throw new Error(m); }
   return r;
@@ -437,9 +441,11 @@ function setMode(m) {
   if (m === "new") goStep(0, false);
 }
 function route() {
-  const app = location.hash === "#app";
-  $("#landing").classList.toggle("on", !app);
+  const adm = location.hash === "#admin", app = location.hash === "#app";
+  $("#landing").classList.toggle("on", !app && !adm);
   $("#app").classList.toggle("on", app);
+  $("#admin").classList.toggle("on", adm);
+  if (typeof showAdmin === "function") showAdmin(adm);
   if (app) goStep(step, false);
 }
 
@@ -500,5 +506,6 @@ function init() {
   window.addEventListener("hashchange", route);
   LANG = detectLang();
   resetForm(); showMode(); goStep(0, false); setLang(LANG); route();
+  if (typeof authInit === "function") authInit();
 }
 document.addEventListener("DOMContentLoaded", init);

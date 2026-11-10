@@ -1,3 +1,4 @@
 python-docx>=1.1
 pillow>=10
+psycopg[binary]>=3.1
 # .doc fayllar uchun LibreOffice yoki Word kerak (Windows: pywin32 ixtiyoriy)

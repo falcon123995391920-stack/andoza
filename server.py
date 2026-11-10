@@ -32,6 +32,7 @@ BASE = Path(__file__).resolve().parent
 sys.path.insert(0, str(BASE))
 
 import builder  # noqa: E402
+import auth  # noqa: E402
 import core
 import doclang  # noqa: E402
 import obj_parser  # noqa: E402
@@ -43,8 +44,10 @@ STATIC = BASE / "static"
 SEC = [("X-Content-Type-Options", "nosniff"), ("X-Frame-Options", "DENY"),
        ("Referrer-Policy", "no-referrer"), ("Cache-Control", "no-store"),
        ("Content-Security-Policy",
-        "default-src 'self'; img-src 'self' data: blob:; style-src 'self'; script-src 'self'; "
-        "connect-src 'self'; frame-ancestors 'none'; base-uri 'none'; form-action 'none'")]
+        "default-src 'self'; img-src 'self' data: blob: https://*.googleusercontent.com; "
+        "style-src 'self' https://accounts.google.com/gsi/style; script-src 'self' https://accounts.google.com/gsi/client; "
+        "connect-src 'self' https://accounts.google.com/gsi/; frame-src https://accounts.google.com/gsi/; "
+        "frame-ancestors 'none'; base-uri 'none'; form-action 'none'")]
 
 
 class ApiError(Exception):
@@ -232,11 +235,59 @@ def _auth_ok(environ) -> bool:
     return hmac.compare_digest(given.encode(), pw.encode()) and ok_user
 
 
-def _json(start, obj, code=200):
+def _json(start, obj, code=200, extra=()):
     body = json.dumps(obj, ensure_ascii=False).encode("utf8")
     start(f"{code} {'OK' if code == 200 else 'Error'}",
-          [("Content-Type", "application/json; charset=utf-8"), ("Content-Length", str(len(body)))] + SEC)
+          [("Content-Type", "application/json; charset=utf-8"), ("Content-Length", str(len(body)))] + list(extra) + SEC)
     return [body]
+
+
+def _secure(environ) -> bool:
+    return environ.get("HTTP_X_FORWARDED_PROTO", environ.get("wsgi.url_scheme", "")) == "https"
+
+
+def _read_json(environ) -> dict:
+    n = int(environ.get("CONTENT_LENGTH") or 0)
+    if n > MAX_BODY:
+        raise ApiError("Fayl juda katta", 413)
+    return json.loads(environ["wsgi.input"].read(n) or b"{}")
+
+
+def _auth_route(start, environ, method, path):
+    """Kirish / admin yo'llari. Topilmasa None."""
+    if method == "GET" and path == "/api/config":
+        return _json(start, {"google_client_id": auth.CLIENT_ID, "dev": auth.DEV})
+    if method == "GET" and path == "/api/me":
+        u = auth.current_user(environ)
+        return _json(start, {"user": auth._public(u) if u else None})
+    if method == "GET" and path == "/api/admin/users":
+        auth.require_admin(environ)
+        return _json(start, auth.list_users())
+    if method != "POST" or not path.startswith(("/api/auth/", "/api/admin/", "/api/ping")):
+        return None
+    d = _read_json(environ)
+    if path == "/api/auth/google":
+        u = auth.login_google(str(d.get("credential", "")))
+        return _json(start, {"user": auth._public(u)}, extra=[("Set-Cookie", auth.make_cookie(u["email"], _secure(environ)))])
+    if path == "/api/auth/dev":
+        u = auth.login_dev(str(d.get("email", "")), str(d.get("name", "")))
+        return _json(start, {"user": auth._public(u)}, extra=[("Set-Cookie", auth.make_cookie(u["email"], _secure(environ)))])
+    if path == "/api/auth/logout":
+        return _json(start, {"ok": True}, extra=[("Set-Cookie", auth.clear_cookie())])
+    if path == "/api/ping":
+        u = auth.require_user(environ, need_ok=False)
+        auth.ping(u)
+        return _json(start, {"ok": True})
+    actor = auth.require_admin(environ)
+    if path == "/api/admin/set":
+        auth.admin_action(actor, str(d.get("email", "")), str(d.get("action", "")))
+    elif path == "/api/admin/add_admin":
+        auth.add_admin_by_email(actor, str(d.get("email", "")))
+    elif path == "/api/admin/settings":
+        auth.set_setting("require_approval", "1" if d.get("require_approval") else "0")
+    else:
+        return None
+    return _json(start, auth.list_users())
 
 
 def _static(start, rel: str):
@@ -258,6 +309,9 @@ def application(environ, start_response):
                                                 ("Content-Type", "text/plain; charset=utf-8")])
             return ["Parol kerak".encode()]
         method, path = environ["REQUEST_METHOD"], environ.get("PATH_INFO", "/")
+        r = _auth_route(start_response, environ, method, path)
+        if r is not None:
+            return r
         if method == "GET":
             if path in ("/", "/index.html"):
                 return _static(start_response, "index.html")
@@ -267,12 +321,11 @@ def application(environ, start_response):
                 return _static(start_response, path[len("/static/"):])
             return _json(start_response, {"error": "Topilmadi"}, 404)
         if method == "POST" and (path in ROUTES_JSON or path in ("/api/build", "/api/zip")):
-            n = int(environ.get("CONTENT_LENGTH") or 0)
-            if n > MAX_BODY:
-                raise ApiError("Fayl juda katta", 413)
-            data = json.loads(environ["wsgi.input"].read(n) or b"{}")
+            data = _read_json(environ)
+            user = auth.require_user(environ) if path in ("/api/build", "/api/zip", "/api/convert") else None
             if path == "/api/build":
                 blob, fname, nwarn = api_build(data)
+                auth.count_download(user)
                 start_response("200 OK", [
                     ("Content-Type", DOCX_MIME), ("Content-Length", str(len(blob))),
                     ("Content-Disposition", f"attachment; filename*=UTF-8''{quote(fname)}"),
@@ -281,12 +334,15 @@ def application(environ, start_response):
                 return [blob]
             if path == "/api/zip":
                 blob = api_zip(data)
+                auth.count_download(user, max(1, len(data.get("items") or [])))
                 start_response("200 OK", [("Content-Type", "application/zip"),
                                           ("Content-Length", str(len(blob))),
                                           ("Content-Disposition", "attachment; filename=obyektivkalar.zip")] + SEC)
                 return [blob]
             return _json(start_response, ROUTES_JSON[path](data))
         return _json(start_response, {"error": "Topilmadi"}, 404)
+    except auth.AuthError as e:
+        return _json(start_response, {"error": str(e), "auth": str(e) if str(e) in ("login", "blocked", "pending", "forbidden") else ""}, e.code)
     except ApiError as e:
         return _json(start_response, {"error": str(e)}, e.code)
     except json.JSONDecodeError:
