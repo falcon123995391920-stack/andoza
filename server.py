@@ -257,7 +257,7 @@ def _read_json(environ) -> dict:
 def _auth_route(start, environ, method, path):
     """Kirish / admin yo'llari. Topilmasa None."""
     if method == "GET" and path == "/api/config":
-        return _json(start, {"google_client_id": auth.CLIENT_ID, "dev": auth.DEV})
+        return _json(start, {"google_client_id": auth.CLIENT_ID, "dev": auth.DEV, "require_login": auth.get_setting("require_login") == "1"})
     if method == "GET" and path == "/api/me":
         u = auth.current_user(environ)
         return _json(start, {"user": auth._public(u) if u else None})
@@ -288,7 +288,9 @@ def _auth_route(start, environ, method, path):
         auth.add_admin_by_email(actor, str(d.get("email", "")))
     elif path == "/api/admin/settings":
         auth.require_super(environ)
-        auth.set_setting("require_approval", "1" if d.get("require_approval") else "0")
+        for k in ("require_approval", "require_login"):
+            if k in d:
+                auth.set_setting(k, "1" if d.get(k) else "0")
     else:
         return None
     return _json(start, auth.list_users(actor))
@@ -326,7 +328,7 @@ def application(environ, start_response):
             return _json(start_response, {"error": "Topilmadi"}, 404)
         if method == "POST" and (path in ROUTES_JSON or path in ("/api/build", "/api/zip")):
             data = _read_json(environ)
-            user = auth.require_user(environ) if path in ("/api/build", "/api/zip", "/api/convert") else None
+            user = auth.optional_user(environ) if path in ("/api/build", "/api/zip", "/api/convert") else None
             if path == "/api/build":
                 blob, fname, nwarn = api_build(data)
                 auth.count_download(user)

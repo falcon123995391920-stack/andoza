@@ -157,6 +157,16 @@ def require_user(environ, need_ok=True) -> dict:
     return u
 
 
+def optional_user(environ):
+    """Yuklash uchun: kirgan bo'lsa tekshiradi; kirmagan bo'lsa — 'majburiy login' o'chiq bo'lsa mehmon sifatida o'tkazadi."""
+    u = current_user(environ)
+    if u:
+        return require_user(environ)
+    if get_setting("require_login") == "1":
+        raise AuthError("login", 401)
+    return None
+
+
 def require_admin(environ) -> dict:
     u = require_user(environ, need_ok=False)
     if _eff_role(u) not in ("admin", "super"):
@@ -244,7 +254,10 @@ def ping(u: dict):
     _q("UPDATE users SET last_seen=? WHERE email=?", (int(time.time()), u["email"]), write=True)
 
 
-def count_download(u: dict, n: int = 1):
+def count_download(u, n: int = 1):
+    if u is None:
+        set_setting("guest_downloads", int(get_setting("guest_downloads", "0")) + n)
+        return
     _q("UPDATE users SET downloads=downloads+? WHERE email=?", (n, u["email"]), write=True)
 
 
@@ -269,8 +282,10 @@ def list_users(actor: dict) -> dict:
                       "today": sum(1 for x in users if x["last_login"] and now - x["last_login"] < 86400),
                       "downloads": sum(x["downloads"] or 0 for x in users),
                       "pending": sum(1 for x in users if not x["approved"]),
-                      "blocked": sum(1 for x in users if x["blocked"])},
-            "settings": {"require_approval": get_setting("require_approval") == "1"},
+                      "blocked": sum(1 for x in users if x["blocked"]),
+                      "guests": int(get_setting("guest_downloads", "0"))},
+            "settings": {"require_approval": get_setting("require_approval") == "1",
+                         "require_login": get_setting("require_login") == "1"},
             "viewer": "super" if is_super else "admin"}
 
 

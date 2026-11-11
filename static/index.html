@@ -58,7 +58,7 @@
   </div>
 
   <footer class="l-foot">
-    <a class="author" href="https://t.me/AndozaUzBot" target="_blank" rel="noopener noreferrer">
+    <a class="author" href="https://t.me/uzb_coder_dev_bot" target="_blank" rel="noopener noreferrer">
       <img src="/static/muallif.jpg" alt="" width="60" height="60">
       <div><b data-i18n="author"></b><span data-i18n="author_role"></span></div>
       <svg class="tg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#2AABEE"/><path fill="#fff" d="M17.9 7.1 5.6 11.8c-.8.3-.8.8-.1 1l3.1 1 1.2 3.7c.1.4.3.5.6.5s.4-.1.6-.3l1.7-1.6 3.4 2.5c.6.3 1 .2 1.2-.6l2-9.5c.2-.9-.3-1.3-1.1-.9zm-7.2 6.4 6.3-4c.3-.2.6-.1.4.1l-5.2 4.8-.2 2.2z"/></svg>
@@ -242,7 +242,8 @@
   <main class="ad-wrap">
     <div id="ad-stats" class="ad-stats"></div>
     <div class="panel ad-tools" id="ad-tools">
-      <label class="switch"><input type="checkbox" id="ad-appr"><span data-i18n="ad_appr"></span></label>
+      <div class="sw-col"><label class="switch"><input type="checkbox" id="ad-req"><span data-i18n="ad_req"></span></label>
+      <label class="switch"><input type="checkbox" id="ad-appr"><span data-i18n="ad_appr"></span></label></div>
       <div id="ad-addbox" class="addbox hidden"><input id="ad-email" type="email" placeholder="admin@gmail.com" data-i18n-ph="ad_addadm"><button class="btn" id="ad-add" type="button" data-i18n="ad_add"></button></div>
     </div>
     <div class="panel" id="ad-list"></div>
@@ -260,6 +261,8 @@
       <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
       <span data-i18n="a_google"></span></button>
     <div id="login-dev" class="hidden devbox"><input id="dev-email" type="email" placeholder="test@example.com"><button class="btn" id="dev-go" type="button">Dev</button></div>
+    <p id="login-note" class="hint"></p>
+    <button id="login-skip" class="btn skip hidden" type="button" data-i18n="a_skip"></button>
     <p id="login-msg" class="login-msg"></p>
   </div>
 </div>

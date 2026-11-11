@@ -330,3 +330,7 @@ a.author:active{transform:scale(.98)}
   .pill{font-size:12px;padding:5px 12px}
 }
 @media (max-width:860px) and (max-height:760px){.feat{display:none}}
+
+.btn.skip{display:block;width:100%;max-width:320px;margin:10px auto 0;background:transparent;color:var(--mute);box-shadow:none}
+.btn.skip:hover{color:var(--ink)}.btn.skip.hidden{display:none}
+.sw-col{display:flex;flex-direction:column;gap:10px}

@@ -52,6 +52,12 @@ function loadGsi() {
     document.head.append(s);
   });
 }
+function guestOK() { try { return sessionStorage.getItem("guest") === "1"; } catch (e) { return false; } }
+/* Yuklashdan oldin: majburiy bo'lmasa — kirish yoki "mehmon" tanlovi (bir marta so'raladi) */
+async function preAuth() {
+  if (ME || CFG.require_login || guestOK()) return;
+  try { await askLogin(null, true); } catch (e) { throw e; }
+}
 function closeLogin(ok, err) {
   $("#login").classList.add("hidden");
   const w = loginWait; loginWait = null;
@@ -78,11 +84,13 @@ function googleClick() {
   if (!tokenClient) { loadGsi().then(() => { initGoogle(); tokenClient.requestAccessToken({ prompt: "select_account" }); }).catch(() => { $("#login-msg").textContent = L("e_net"); }); return; }
   tokenClient.requestAccessToken({ prompt: "select_account" });
 }
-function askLogin(msgKey) {
+function askLogin(msgKey, optional) {
   if (ME) return Promise.resolve();
   if (loginWait) return loginWait.p;
   $("#login").classList.remove("hidden");
   $("#login-msg").textContent = msgKey ? L(msgKey) : "";
+  $("#login-skip").classList.toggle("hidden", !optional);
+  $("#login-note").textContent = optional ? L("a_opt") : "";
   $("#login-dev").classList.toggle("hidden", !CFG.dev);
   $("#g-btn").classList.toggle("hidden", !CFG.google_client_id);
   if (CFG.google_client_id) loadGsi().then(initGoogle).catch(() => {});
@@ -131,8 +139,9 @@ function drawAdmin() {
   $("#ad-tools").classList.toggle("hidden", !sup);
   const stat = (k, v, cls) => h("div", { class: "ad-stat " + (cls || "") }, h("b", { text: String(v) }), h("span", { text: L(k) }));
   $("#ad-stats").replaceChildren(stat("ad_total", S.total), stat("ad_active", S.active, "live"), stat("ad_today", S.today),
-    stat("ad_dl", S.downloads), stat("ad_pending", S.pending, S.pending ? "warnc" : ""), stat("ad_blocked", S.blocked));
+    stat("ad_dl", S.downloads), stat("ad_guests", S.guests), stat("ad_pending", S.pending, S.pending ? "warnc" : ""), stat("ad_blocked", S.blocked));
   $("#ad-appr").checked = d.settings.require_approval;
+  $("#ad-req").checked = d.settings.require_login;
   $("#ad-addbox").classList.toggle("hidden", !sup);
   const rows = d.users.map(u => {
     const btns = [];
@@ -182,11 +191,15 @@ async function authInit() {
   $("#login-close").addEventListener("click", () => closeLogin(false));
   $("#login").addEventListener("click", e => { if (e.target.id === "login") closeLogin(false); });
   $("#dev-go").addEventListener("click", devLogin);
+  $("#login-skip").addEventListener("click", () => { try { sessionStorage.setItem("guest", "1"); } catch (e) {} closeLogin(true); });
   $("#g-btn").addEventListener("click", googleClick);
   if (CFG.google_client_id) loadGsi().then(initGoogle).catch(() => {});
   $("#ad-back").addEventListener("click", () => { location.hash = "#app"; });
   $("#ad-appr").addEventListener("change", async e => {
     try { adminData = await postJSON("/api/admin/settings", { require_approval: e.target.checked }); drawAdmin(); } catch (er) { toast(er.message); }
+  });
+  $("#ad-req").addEventListener("change", async e => {
+    try { adminData = await postJSON("/api/admin/settings", { require_login: e.target.checked }); CFG.require_login = e.target.checked; drawAdmin(); } catch (er) { toast(er.message); }
   });
   $("#ad-add").addEventListener("click", async () => {
     const v = $("#ad-email").value.trim(); if (!v) return;

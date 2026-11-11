@@ -253,6 +253,7 @@ function buildDocLang() {
   });
 }
 async function api(path, body) {
+  if (DOC_PATHS.includes(path) && typeof preAuth === "function") await preAuth();
   body = Object.assign({ lang: DOC_PATHS.includes(path) ? docLang() : LANG }, body);
   let r;
   try { r = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) }); }
