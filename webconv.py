@@ -141,6 +141,7 @@ def web_to_person(w: dict) -> dict:
             text, per = str(r.get("text", "") or "").strip(), period_compose(r)
             if text or per:
                 out.append([per, text])
+        out.sort(key=lambda x: bool(re.search(r"ҳ\.в\.\s*$", x[0] or "")))   # "ҳ.в." doim eng oxirida (barqaror saralash)
         return out
 
     p["deputy"] = rows(w.get("deputy"))

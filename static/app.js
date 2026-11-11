@@ -107,7 +107,14 @@ function workRow(box, v = {}) {
   const ph = h("label", { class: "ph", for: pid }, cb, "ҳ.в.");
   const ta = h("textarea", { class: "t", rows: 1, "data-i18n-ph": "ph_org" }); ta.value = v.text || "";
   const sync = () => { b.disabled = cb.checked; if (cb.checked) b.value = ""; };
-  cb.addEventListener("change", sync); sync();
+  cb.addEventListener("change", () => {
+    sync();
+    if (cb.checked) {                       // "ҳ.в." bitta bo'ladi va doim eng pastda turadi
+      $$(".row.work", box).forEach(r => { const o = $(".pr", r); if (o !== cb && o.checked) { o.checked = false; $(".b", r).disabled = false; } });
+      box.append(row); setTimeout(() => grow(ta), 0);
+    }
+  });
+  sync();
   ta.addEventListener("input", () => grow(ta));
   ta.addEventListener("keydown", e => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $(".a", workRow(box)).focus(); }
@@ -115,7 +122,9 @@ function workRow(box, v = {}) {
   const raw = h("input", { type: "hidden", class: "raw", value: v.raw || "" });
   row.append(a, b, ph, ta, delBtn(row), raw);
   if (v.raw) row.append(h("div", { class: "chip", "data-raw": v.raw, text: L("raw_chip", { raw: v.raw }) }));
-  box.append(row); setTimeout(() => grow(ta), 0); return done(row);
+  const last = $$(".row.work", box).find(r => $(".pr", r).checked);
+  if (last && !cb.checked) box.insertBefore(row, last); else box.append(row);      // yangi qator "ҳ.в." dan oldin qo'shiladi
+  setTimeout(() => grow(ta), 0); return done(row);
 }
 function relTitle(card) {
   const s = $("input[type=radio]:checked", card).value;
@@ -139,7 +148,7 @@ function relCard(v = {}, open = true) {
   const wl = sp("l_rwork", "wl");
   const workLab = h("label", { class: "f w" }, wl, h("textarea", { class: "work", rows: 2, "data-i18n-ph": "ph_rwork" }));
   $(".work", workLab).value = v.work || "";
-  const dead = mk("dy", "l_dy", v.death_year, "", { inputmode: "numeric", maxlength: 4, placeholder: "2000" });
+  const dead = mk("dy", "l_dy", v.death_year, "", { inputmode: "numeric", maxlength: 4, "data-i18n-ph": "ph_year4" });
   const res = mk("res", "l_res", v.residence, "ph_addr");
   if (v.relation && !RELS.includes(v.relation)) sel.append(h("option", { value: v.relation, text: v.relation }));
   sel.value = v.relation || "Отаси"; card.sel = sel;
@@ -161,8 +170,8 @@ function relCard(v = {}, open = true) {
   sum.addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); } });
   const body = h("div", { class: "rel-body" }, sel,
     h("div", { class: "grid2" },
-      mk("fio", "l_fio", v.fio, "", { placeholder: "" }),
-      mk("by", "l_birth", v.year, "", { inputmode: "numeric", maxlength: 4, placeholder: "1960" })),
+      mk("fio", "l_fio", v.fio, "", { "data-i18n-ph": "ph_fio", autocapitalize: "words" }),
+      mk("by", "l_birth", v.year, "", { inputmode: "numeric", maxlength: 4, "data-i18n-ph": "ph_year4" })),
     h("label", { class: "f" }, sp("l_bplace"), h("input", { class: "bp", value: v.place || "", "data-i18n-ph": "ph_region" })),
     h("div", { class: "stat" }, radios), workLab,
     h("div", {}, dead, res),

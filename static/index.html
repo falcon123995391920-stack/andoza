@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2f2f7">
+<meta name="description" content="Андоза — обьективкани бир босишда намунага келтирувчи сайт">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Андоза">
+<link rel="manifest" href="/static/manifest.webmanifest">
+<link rel="apple-touch-icon" href="/static/icon-180.png">
 <link rel="icon" type="image/svg+xml" href="/static/logo.svg">
   <title>Андоза</title>
 <script src="/static/theme.js"></script>
@@ -117,9 +122,9 @@
               </div>
               <div class="fields">
                 <label class="f"><span data-i18n="l_fio"></span>
-                  <input id="fio" placeholder="Рахматуллаев Жасур Бахтиёрович"></label>
+                  <input id="fio" data-i18n-ph="ph_fio" autocomplete="off" autocapitalize="words" enterkeyhint="next"></label>
                 <label class="f"><span data-i18n="l_position"></span>
-                  <textarea id="position" rows="2" placeholder="Жиззах вилояти Зарбдор тумани ҳокимининг ўринбосари - …"></textarea></label>
+                  <textarea id="position" rows="2" data-i18n-ph="ph_pos" autocomplete="off" enterkeyhint="next"></textarea></label>
                 <label class="f narrow"><span data-i18n="l_job"></span>
                   <input id="job_date" class="date" inputmode="numeric" data-i18n-ph="datefmt">
                   <small id="job_preview" class="prev"></small></label>
@@ -130,14 +135,14 @@
             <h2 data-i18n="p_pers"></h2>
             <div class="grid3">
               <label class="f"><span data-i18n="l_birth"></span><input id="birth_date" class="date" inputmode="numeric" data-i18n-ph="datefmt"></label>
-              <label class="f span2"><span data-i18n="l_bplace"></span><input id="birth_place" placeholder="Наманган вилояти, Тўрақўрғон тумани"></label>
-              <label class="f"><span data-i18n="l_nat"></span><input id="nationality" list="dl-nat" placeholder="ўзбек"></label>
-              <label class="f span2"><span data-i18n="l_party"></span><input id="party" list="dl-party" placeholder="йўқ"></label>
-              <label class="f"><span data-i18n="l_edu"></span><input id="education" list="dl-edu" placeholder="олий"></label>
-              <label class="f span2"><span data-i18n="l_spec"></span><input id="specialty" placeholder="иқтисодчи"></label>
-              <label class="f"><span data-i18n="l_deg"></span><input id="degree" list="dl-deg" placeholder="йўқ"></label>
-              <label class="f"><span data-i18n="l_ttl"></span><input id="title" list="dl-title" placeholder="йўқ"></label>
-              <label class="f"><span data-i18n="l_mil"></span><input id="military" placeholder="йўқ"></label>
+              <label class="f span2"><span data-i18n="l_bplace"></span><input id="birth_place" data-i18n-ph="ph_region" autocomplete="off" autocapitalize="sentences"></label>
+              <label class="f"><span data-i18n="l_nat"></span><input id="nationality" list="dl-nat" data-i18n-ph="ph_choose" autocomplete="off"></label>
+              <label class="f span2"><span data-i18n="l_party"></span><input id="party" list="dl-party" data-i18n-ph="ph_choose" autocomplete="off"></label>
+              <label class="f"><span data-i18n="l_edu"></span><input id="education" list="dl-edu" data-i18n-ph="ph_choose" autocomplete="off"></label>
+              <label class="f span2"><span data-i18n="l_spec"></span><input id="specialty" data-i18n-ph="ph_spec" autocomplete="off"></label>
+              <label class="f"><span data-i18n="l_deg"></span><input id="degree" list="dl-deg" data-i18n-ph="ph_none" autocomplete="off"></label>
+              <label class="f"><span data-i18n="l_ttl"></span><input id="title" list="dl-title" data-i18n-ph="ph_none" autocomplete="off"></label>
+              <label class="f"><span data-i18n="l_mil"></span><input id="military" data-i18n-ph="ph_none" autocomplete="off"></label>
             </div>
             <fieldset class="f langs">
               <legend data-i18n="l_langs"></legend>

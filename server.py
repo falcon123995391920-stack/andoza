@@ -16,6 +16,7 @@ import hmac
 import io
 import json
 import mimetypes
+mimetypes.add_type("application/manifest+json", ".webmanifest")
 import os
 import shutil
 import sys

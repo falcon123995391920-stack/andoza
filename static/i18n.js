@@ -108,6 +108,12 @@ K("empty_none", "(bo'sh = «yo'q»)", "(пусто = «нет»)", "(empty = “
 K("add_award", "+ Mukofot", "+ Награда", "+ Award");
 K("h_dep", "Xalq deputatlari / saylanadigan organlar a'zoligi", "Депутат / член выборных органов", "Deputy / elected bodies");
 K("add_row", "+ Qator", "+ Строка", "+ Row");
+K("ph_fio", "Familiya Ism Sharif", "Фамилия Имя Отчество", "Surname, name, patronymic");
+K("ph_pos", "Tashkilot nomi va lavozimi", "Организация и должность", "Organization and position");
+K("ph_choose", "Tanlang yoki yozing", "Выберите или введите", "Select or type");
+K("ph_spec", "Mutaxassislik nomi", "Название специальности", "Specialty name");
+K("ph_none", "Mavjud bo'lmasa — yo'q", "Если нет — «нет»", "If none — “none”");
+K("ph_year4", "YYYY", "ГГГГ", "YYYY", "ЙЙЙЙ");
 K("ph_year", "Yil", "Год", "Year");
 K("ph_inst", "O'quv yurti nomi", "Название учебного заведения", "Institution name");
 K("ph_award", "Mukofot nomi", "Название награды", "Award name");
