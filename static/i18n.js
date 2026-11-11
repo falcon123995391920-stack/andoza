@@ -37,11 +37,10 @@ function K(key, uz, ru, en, cy) { D[key] = { uz, ru, en, cy: cy || null }; }
 
 /* ---------- kirish sahifasi ---------- */
 K("brand", "Andoza", "Андоза", "Andoza", "Андоза");
-K("tagline", "Obyektivka tayyorlash endi juda oson!", "Подготовить объективку теперь очень просто!", "Creating an official bio is now easier than ever!", "Объективка тайёрлаш энди жуда осон!");
+K("tagline", "Obyektivka — bir standartda", "Объективка — по единому стандарту", "Official bios — one standard", "Объективка — бир стандартда");
 K("pill", "Namunaga 100% mos", "100% соответствие образцу", "Matches the sample 100%");
-K("h1a", "Obyektivka —", "Объективка —", "Obyektivka —", "Объективка —");
-K("h1b", "bir bosishda", "в один клик", "in one click");
-K("h1c", "standart", "по стандарту", "to standard");
+K("h1a", "Obyektivka tayyorlash", "Подготовка объективки", "Preparing an official bio is", "Объективка тайёрлаш");
+K("h1b", "endi juda oson!", "теперь очень просто!", "now super easy!", "энди жуда осон!");
 K("lead", "Yangisini yarating, eski faylni yuklang yoki butun papkani bir zumda namunaga keltiring.",
   "Создайте новую, загрузите старый файл или приведите целую папку к образцу за считанные секунды.",
   "Create a new one, upload an old file, or bring a whole folder to the standard in seconds.");
@@ -158,9 +157,14 @@ K("check_badge", "tekshiring", "проверьте", "check");
 
 K("w_title", "Tekshiruv", "Проверка", "Check");
 
+K("trust1", "Bepul", "Бесплатно", "Free");
+K("trust2", "{Google} bilan kirish", "Вход через Google", "Google sign-in");
+K("trust3", "Ma'lumot saqlanmaydi", "Данные не хранятся", "No data stored");
+K("a_google", "{Google} bilan davom etish", "Продолжить с Google", "Continue with Google");
 K("a_login", "Kirish", "Войти", "Sign in");
 K("a_logout", "Chiqish", "Выйти", "Sign out");
 K("a_admin", "Admin panel", "Админ-панель", "Admin panel");
+K("a_super", "Super admin panel", "Панель супер-админа", "Super admin panel");
 K("a_title", "Tizimga kiring", "Войдите в систему", "Sign in");
 K("a_sub", "{Word} faylni yuklab olish uchun {Google} hisobingiz bilan kiring. Kiritgan ma'lumotlaringiz yo'qolmaydi.", "Чтобы скачать Word-файл, войдите через аккаунт Google. Введённые данные не потеряются.", "Sign in with Google to download the Word file. Your entered data will not be lost.");
 K("a_need", "{Word} faylni yuklab olish uchun avval kiring.", "Сначала войдите, чтобы скачать файл.", "Please sign in to download.");

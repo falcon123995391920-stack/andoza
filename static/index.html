@@ -22,7 +22,7 @@
   <div class="l-main">
     <div class="l-txt">
       <span class="pill"><i class="dot"></i><span data-i18n="pill"></span></span>
-      <h1 class="big"><span data-i18n="h1a"></span><br><em data-i18n="h1b"></em> <span data-i18n="h1c"></span></h1>
+      <h1 class="big"><span data-i18n="h1a"></span><br><em data-i18n="h1b"></em></h1>
       <p class="lead" data-i18n="lead"></p>
       <ul class="feat">
         <li><b>1</b><span data-i18n="f1"></span></li>
@@ -32,6 +32,7 @@
       <div class="cta">
         <a class="btn primary xl" href="#app" id="start"><span data-i18n="start"></span> <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
+      <p class="trust"><span data-i18n="trust1"></span><i></i><span data-i18n="trust2"></span><i></i><span data-i18n="trust3"></span></p>
     </div>
 
     <div class="scene" aria-hidden="true">
@@ -52,10 +53,11 @@
   </div>
 
   <footer class="l-foot">
-    <div class="author">
-      <img src="/static/muallif.jpg" alt="" width="44" height="44">
+    <a class="author" href="https://t.me/uzb_coder_dev_bot" target="_blank" rel="noopener noreferrer">
+      <img src="/static/muallif.jpg" alt="" width="60" height="60">
       <div><b data-i18n="author"></b><span data-i18n="author_role"></span></div>
-    </div>
+      <svg class="tg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#2AABEE"/><path fill="#fff" d="M17.9 7.1 5.6 11.8c-.8.3-.8.8-.1 1l3.1 1 1.2 3.7c.1.4.3.5.6.5s.4-.1.6-.3l1.7-1.6 3.4 2.5c.6.3 1 .2 1.2-.6l2-9.5c.2-.9-.3-1.3-1.1-.9zm-7.2 6.4 6.3-4c.3-.2.6-.1.4.1l-5.2 4.8-.2 2.2z"/></svg>
+    </a>
   </footer>
 </div>
 
@@ -229,12 +231,12 @@
 <div id="admin" class="view">
   <header class="bar-top">
     <a class="logo" href="#app"><img class="logo-mark" src="/static/logo.svg" alt="" width="32" height="32"><span class="logo-t" data-i18n="brand"></span></a>
-    <h2 class="ad-h" data-i18n="ad_title"></h2>
+    <h2 class="ad-h"></h2>
     <div class="tools"><button class="btn small" id="ad-back" type="button" data-i18n="ad_back"></button><div class="user-slot"></div><div class="lang-slot"></div><button class="icon-btn theme-btn" type="button" data-i18n-aria="theme"></button></div>
   </header>
   <main class="ad-wrap">
     <div id="ad-stats" class="ad-stats"></div>
-    <div class="panel ad-tools">
+    <div class="panel ad-tools" id="ad-tools">
       <label class="switch"><input type="checkbox" id="ad-appr"><span data-i18n="ad_appr"></span></label>
       <div id="ad-addbox" class="addbox hidden"><input id="ad-email" type="email" placeholder="admin@gmail.com" data-i18n-ph="ad_addadm"><button class="btn" id="ad-add" type="button" data-i18n="ad_add"></button></div>
     </div>
@@ -249,7 +251,9 @@
     <img class="logo-mark big" src="/static/logo.svg" alt="" width="56" height="56">
     <h2 data-i18n="a_title"></h2>
     <p class="hint" data-i18n="a_sub"></p>
-    <div id="g-btn" class="g-btn"></div>
+    <button id="g-btn" class="gbtn" type="button">
+      <svg viewBox="0 0 48 48" width="22" height="22" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7A14.5 14.5 0 0 1 9.5 24c0-1.6.3-3.2.8-4.7l-7.9-6.1A24 24 0 0 0 0 24c0 3.9.9 7.5 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.9 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg>
+      <span data-i18n="a_google"></span></button>
     <div id="login-dev" class="hidden devbox"><input id="dev-email" type="email" placeholder="test@example.com"><button class="btn" id="dev-go" type="button">Dev</button></div>
     <p id="login-msg" class="login-msg"></p>
   </div>

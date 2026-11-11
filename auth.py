@@ -164,6 +164,13 @@ def require_admin(environ) -> dict:
     return u
 
 
+def require_super(environ) -> dict:
+    u = require_user(environ, need_ok=False)
+    if _eff_role(u) != "super":
+        raise AuthError("forbidden", 403)
+    return u
+
+
 # ---------------------------------------------------------------- kirish
 def _verify_google(credential: str) -> dict:
     if not CLIENT_ID:
@@ -181,6 +188,30 @@ def _verify_google(credential: str) -> dict:
     if int(d.get("exp", 0)) < time.time():
         raise AuthError("Google tokeni eskirgan", 401)
     return {"email": d["email"].lower(), "name": d.get("name", ""), "picture": d.get("picture", "")}
+
+
+def _verify_access_token(token: str) -> dict:
+    if not CLIENT_ID:
+        raise AuthError("Google sozlanmagan (GOOGLE_CLIENT_ID)", 503)
+    try:
+        with urllib.request.urlopen("https://oauth2.googleapis.com/tokeninfo?" + urllib.parse.urlencode({"access_token": token}), timeout=10) as r:
+            ti = json.loads(r.read().decode())
+        req = urllib.request.Request("https://www.googleapis.com/oauth2/v3/userinfo", headers={"Authorization": "Bearer " + token})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            ui = json.loads(r.read().decode())
+    except Exception:
+        raise AuthError("Google tokeni tasdiqlanmadi", 401)
+    if CLIENT_ID not in (ti.get("aud"), ti.get("azp")):
+        raise AuthError("Google tokeni bu ilova uchun emas", 401)
+    if not ui.get("email") or str(ui.get("email_verified")).lower() != "true":
+        raise AuthError("Google email tasdiqlanmagan", 401)
+    if ti.get("email") and ti["email"].lower() != ui["email"].lower():
+        raise AuthError("Google tokeni yaroqsiz", 401)
+    return {"email": ui["email"].lower(), "name": ui.get("name", ""), "picture": ui.get("picture", "")}
+
+
+def login_google_token(token: str) -> dict:
+    return _upsert(_verify_access_token(token))
 
 
 def login_google(credential: str) -> dict:
@@ -218,10 +249,14 @@ def count_download(u: dict, n: int = 1):
 
 
 # ---------------------------------------------------------------- admin
-def list_users() -> dict:
+def list_users(actor: dict) -> dict:
+    """Super admin hammani ko'radi; oddiy admin faqat oddiy foydalanuvchilarni (adminlarni emas)."""
     init_db()
     now = int(time.time())
+    is_super = _eff_role(actor) == "super"
     rows = _q("SELECT * FROM users ORDER BY last_seen DESC")
+    if not is_super:
+        rows = [u for u in rows if _eff_role(u) == "user"]
     users = []
     for u in rows:
         p = _public(u)
@@ -235,7 +270,8 @@ def list_users() -> dict:
                       "downloads": sum(x["downloads"] or 0 for x in users),
                       "pending": sum(1 for x in users if not x["approved"]),
                       "blocked": sum(1 for x in users if x["blocked"])},
-            "settings": {"require_approval": get_setting("require_approval") == "1"}}
+            "settings": {"require_approval": get_setting("require_approval") == "1"},
+            "viewer": "super" if is_super else "admin"}
 
 
 def admin_action(actor: dict, email: str, action: str):
@@ -253,6 +289,8 @@ def admin_action(actor: dict, email: str, action: str):
         return
     if target_role == "admin" and actor_role != "super":
         raise AuthError("Adminni faqat super admin o'zgartira oladi", 403)
+    if action == "delete" and actor_role != "super":
+        raise AuthError("O'chirishni faqat super admin qiladi", 403)
     if action == "block":
         _q("UPDATE users SET blocked=1 WHERE email=?", (email,), write=True)
     elif action == "unblock":

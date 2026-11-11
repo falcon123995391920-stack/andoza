@@ -294,3 +294,39 @@ textarea{min-height:46px}
 @media(max-width:640px){.ad-h{display:none}#ad-back{padding:7px 10px}}
 #ad-list{display:block!important}
 .ad-stats{width:100%}
+
+/* ---- mobil moslash va muallif kartasi ---- */
+a.author{text-decoration:none;color:var(--ink);cursor:pointer;transition:transform .2s,box-shadow .2s;gap:14px;padding:6px 16px 6px 6px}
+a.author:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(20,30,70,.22),0 0 0 .5px var(--line)}
+a.author:active{transform:scale(.98)}
+.author img{width:60px;height:60px;box-shadow:0 0 0 2.5px var(--acc),0 0 0 6px var(--acc2)}
+.author .tg{flex:none}
+.trust{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;color:var(--mute);font-size:13px;margin:14px 0 0}
+.trust i{width:4px;height:4px;border-radius:50%;background:var(--mute);opacity:.6}
+.l-foot{padding-bottom:max(14px,env(safe-area-inset-bottom))}
+.gbtn{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;max-width:320px;margin:16px auto 4px;padding:13px 18px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:16px;font-weight:600;cursor:pointer;box-shadow:0 4px 14px rgba(20,30,70,.1);transition:transform .15s,box-shadow .2s}
+.gbtn:hover{box-shadow:0 8px 22px rgba(20,30,70,.18)}.gbtn:active{transform:scale(.98)}.gbtn:disabled{opacity:.6}
+.gbtn svg{flex:none}.gbtn.hidden{display:none}
+@media (max-width:640px){
+  .bar-top{flex-wrap:wrap;height:auto;gap:8px 10px;padding:8px 12px;padding-top:max(8px,env(safe-area-inset-top))}
+  .bar-top .logo{order:1}.bar-top .tools{order:2;margin-left:auto}
+  .bar-top .seg{order:3;flex:1 1 100%;max-width:none;margin:0}
+  .bar-top .seg button{padding:8px 6px}
+  .user-slot .btn.small{padding:7px 12px}
+  .l-top .user-slot .btn.small{padding:7px 12px}
+  html,body{overflow-x:hidden}
+}
+@media (max-width:860px){
+  .author img{width:56px;height:56px}
+  .l-foot{margin-top:10px}
+  .big{font-size:clamp(30px,9vw,40px)}
+}
+@media (max-width:860px){
+  .phone{width:clamp(96px,15vh,140px)!important;max-height:22vh!important}
+  .big{margin:8px 0 8px}
+  .lead{font-size:15px;margin-bottom:12px}
+  .feat li{font-size:13px;padding:5px 11px 5px 6px}
+  .trust{font-size:12px;gap:8px;margin-top:10px}
+  .pill{font-size:12px;padding:5px 12px}
+}
+@media (max-width:860px) and (max-height:760px){.feat{display:none}}

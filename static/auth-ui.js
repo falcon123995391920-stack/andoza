@@ -23,7 +23,7 @@ function renderUser() {
                           : h("span", { class: "ava ph" }, (ME.name || ME.email)[0].toUpperCase());
     const menu = h("div", { class: "menu umenu hidden" },
       h("div", { class: "uinfo" }, h("b", { text: ME.name || ME.email }), h("small", { text: ME.email }), h("small", { class: "rolechip", text: L("r_" + ME.role) })),
-      isAdmin() ? h("button", { type: "button", onclick: () => { menu.classList.add("hidden"); location.hash = "#admin"; } }, L("a_admin")) : null,
+      isAdmin() ? h("button", { type: "button", onclick: () => { menu.classList.add("hidden"); location.hash = ME.role === "super" ? "#super" : "#admin"; } }, L(ME.role === "super" ? "a_super" : "a_admin")) : null,
       h("button", { type: "button", onclick: logout }, L("a_logout")));
     const btn = h("button", { class: "icon-btn ubtn", type: "button", "aria-label": ME.email, onclick: e => { e.stopPropagation(); menu.classList.toggle("hidden"); } }, av);
     slot.append(btn, menu);
@@ -57,26 +57,36 @@ function closeLogin(ok, err) {
   const w = loginWait; loginWait = null;
   if (w) (ok ? w.res() : w.rej(err || new Error(L("a_cancel"))));
 }
-async function onGoogle(resp) {
+let tokenClient = null;
+async function onGoogleToken(resp) {
+  if (resp.error || !resp.access_token) { $("#login-msg").textContent = L("a_cancel"); return; }
+  $("#g-btn").disabled = true;
   try {
-    ME = (await postJSON("/api/auth/google", { credential: resp.credential })).user;
+    ME = (await postJSON("/api/auth/google_token", { access_token: resp.access_token })).user;
     renderUser(); closeLogin(true);
   } catch (e) { $("#login-msg").textContent = e.message; }
+  $("#g-btn").disabled = false;
+}
+function initGoogle() {
+  if (tokenClient || !CFG.google_client_id || !gsiLoaded) return;
+  tokenClient = google.accounts.oauth2.initTokenClient({ client_id: CFG.google_client_id, scope: "openid email profile", callback: onGoogleToken,
+    error_callback: () => { $("#login-msg").textContent = L("a_cancel"); } });
+}
+function googleClick() {
+  $("#login-msg").textContent = "";
+  if (!CFG.google_client_id) { $("#login-msg").textContent = L("a_nocfg"); return; }
+  if (!tokenClient) { loadGsi().then(() => { initGoogle(); tokenClient.requestAccessToken({ prompt: "select_account" }); }).catch(() => { $("#login-msg").textContent = L("e_net"); }); return; }
+  tokenClient.requestAccessToken({ prompt: "select_account" });
 }
 function askLogin(msgKey) {
   if (ME) return Promise.resolve();
   if (loginWait) return loginWait.p;
-  const box = $("#login"); box.classList.remove("hidden");
+  $("#login").classList.remove("hidden");
   $("#login-msg").textContent = msgKey ? L(msgKey) : "";
-  const slot = $("#g-btn"); slot.replaceChildren();
   $("#login-dev").classList.toggle("hidden", !CFG.dev);
-  if (CFG.google_client_id) {
-    loadGsi().then(() => {
-      google.accounts.id.initialize({ client_id: CFG.google_client_id, callback: onGoogle, ux_mode: "popup" });
-      google.accounts.id.renderButton(slot, { theme: document.documentElement.dataset.theme === "dark" ? "filled_black" : "outline",
-        size: "large", shape: "pill", text: "continue_with", width: 280, locale: { uz: "uz", cy: "uz", ru: "ru", en: "en" }[LANG] });
-    }).catch(() => { $("#login-msg").textContent = L("e_net"); });
-  } else if (!CFG.dev) $("#login-msg").textContent = L("a_nocfg");
+  $("#g-btn").classList.toggle("hidden", !CFG.google_client_id);
+  if (CFG.google_client_id) loadGsi().then(initGoogle).catch(() => {});
+  else if (!CFG.dev) $("#login-msg").textContent = L("a_nocfg");
   let res, rej; const p = new Promise((a, b) => { res = a; rej = b; });
   loginWait = { p, res, rej };
   return p;
@@ -116,20 +126,22 @@ async function adminAct(email, action) {
 }
 function drawAdmin() {
   const d = adminData; if (!d) return;
-  const S = d.stats, me = ME ? ME.email : "";
+  const S = d.stats, me = ME ? ME.email : "", sup = d.viewer === "super" && location.hash === "#super";
+  $(".ad-h").textContent = L(sup ? "a_super" : "a_admin");
+  $("#ad-tools").classList.toggle("hidden", !sup);
   const stat = (k, v, cls) => h("div", { class: "ad-stat " + (cls || "") }, h("b", { text: String(v) }), h("span", { text: L(k) }));
   $("#ad-stats").replaceChildren(stat("ad_total", S.total), stat("ad_active", S.active, "live"), stat("ad_today", S.today),
     stat("ad_dl", S.downloads), stat("ad_pending", S.pending, S.pending ? "warnc" : ""), stat("ad_blocked", S.blocked));
   $("#ad-appr").checked = d.settings.require_approval;
-  $("#ad-addbox").classList.toggle("hidden", !(ME && ME.role === "super"));
+  $("#ad-addbox").classList.toggle("hidden", !sup);
   const rows = d.users.map(u => {
     const btns = [];
     const isSuper = u.role === "super";
     if (!isSuper && !(u.role === "admin" && ME.role !== "super")) {
       if (!u.approved) btns.push(h("button", { class: "btn small", onclick: () => adminAct(u.email, "approve") }, L("ad_approve")));
       btns.push(h("button", { class: "btn small" + (u.blocked ? "" : " dangerous"), onclick: () => adminAct(u.email, u.blocked ? "unblock" : "block") }, L(u.blocked ? "ad_unblock" : "ad_block")));
-      if (ME.role === "super") btns.push(h("button", { class: "btn small", onclick: () => adminAct(u.email, u.role === "admin" ? "remove_admin" : "make_admin") }, L(u.role === "admin" ? "ad_rmadm" : "ad_mkadm")));
-      btns.push(h("button", { class: "btn small dangerous", onclick: () => adminAct(u.email, "delete") }, L("ad_del")));
+      if (sup) btns.push(h("button", { class: "btn small", onclick: () => adminAct(u.email, u.role === "admin" ? "remove_admin" : "make_admin") }, L(u.role === "admin" ? "ad_rmadm" : "ad_mkadm")));
+      if (sup) btns.push(h("button", { class: "btn small dangerous", onclick: () => adminAct(u.email, "delete") }, L("ad_del")));
     }
     const av = u.picture ? h("img", { class: "ava", src: u.picture, alt: "", referrerpolicy: "no-referrer", width: 32, height: 32 }) : h("span", { class: "ava ph" }, (u.name || u.email)[0].toUpperCase());
     return h("div", { class: "urow" + (u.blocked ? " blk" : "") },
@@ -149,11 +161,15 @@ async function refreshAdmin() {
   catch (e) { toast(L("ad_forbidden")); location.hash = "#app"; }
 }
 let authReady = false;
-function showAdmin(on) {
+async function showAdmin(on) {
   clearInterval(adminTimer);
   if (!on || !authReady) return;
-  if (!ME || !isAdmin()) {
-    askLogin("a_need").then(() => { if (isAdmin()) showAdmin(true); else { toast(L("ad_forbidden")); location.hash = "#app"; } })
+  if (ME && !(location.hash === "#super" ? ME.role === "super" : isAdmin())) await loadMe();   // rol o'zgargan bo'lishi mumkin
+  const need = location.hash === "#super" ? "super" : "admin";
+  const allowed = () => ME && (need === "super" ? ME.role === "super" : isAdmin());
+  if (!allowed()) {
+    if (ME) { toast(L("ad_forbidden")); location.hash = "#app"; return; }
+    askLogin("a_need").then(() => { if (allowed()) showAdmin(true); else { toast(L("ad_forbidden")); location.hash = "#app"; } })
       .catch(() => { location.hash = "#app"; });
     return;
   }
@@ -166,6 +182,8 @@ async function authInit() {
   $("#login-close").addEventListener("click", () => closeLogin(false));
   $("#login").addEventListener("click", e => { if (e.target.id === "login") closeLogin(false); });
   $("#dev-go").addEventListener("click", devLogin);
+  $("#g-btn").addEventListener("click", googleClick);
+  if (CFG.google_client_id) loadGsi().then(initGoogle).catch(() => {});
   $("#ad-back").addEventListener("click", () => { location.hash = "#app"; });
   $("#ad-appr").addEventListener("change", async e => {
     try { adminData = await postJSON("/api/admin/settings", { require_approval: e.target.checked }); drawAdmin(); } catch (er) { toast(er.message); }

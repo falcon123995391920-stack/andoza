@@ -261,13 +261,15 @@ def _auth_route(start, environ, method, path):
         u = auth.current_user(environ)
         return _json(start, {"user": auth._public(u) if u else None})
     if method == "GET" and path == "/api/admin/users":
-        auth.require_admin(environ)
-        return _json(start, auth.list_users())
+        return _json(start, auth.list_users(auth.require_admin(environ)))
     if method != "POST" or not path.startswith(("/api/auth/", "/api/admin/", "/api/ping")):
         return None
     d = _read_json(environ)
     if path == "/api/auth/google":
         u = auth.login_google(str(d.get("credential", "")))
+        return _json(start, {"user": auth._public(u)}, extra=[("Set-Cookie", auth.make_cookie(u["email"], _secure(environ)))])
+    if path == "/api/auth/google_token":
+        u = auth.login_google_token(str(d.get("access_token", "")))
         return _json(start, {"user": auth._public(u)}, extra=[("Set-Cookie", auth.make_cookie(u["email"], _secure(environ)))])
     if path == "/api/auth/dev":
         u = auth.login_dev(str(d.get("email", "")), str(d.get("name", "")))
@@ -284,10 +286,11 @@ def _auth_route(start, environ, method, path):
     elif path == "/api/admin/add_admin":
         auth.add_admin_by_email(actor, str(d.get("email", "")))
     elif path == "/api/admin/settings":
+        auth.require_super(environ)
         auth.set_setting("require_approval", "1" if d.get("require_approval") else "0")
     else:
         return None
-    return _json(start, auth.list_users())
+    return _json(start, auth.list_users(actor))
 
 
 def _static(start, rel: str):

@@ -441,7 +441,7 @@ function setMode(m) {
   if (m === "new") goStep(0, false);
 }
 function route() {
-  const adm = location.hash === "#admin", app = location.hash === "#app";
+  const adm = location.hash === "#admin" || location.hash === "#super", app = location.hash === "#app";
   $("#landing").classList.toggle("on", !app && !adm);
   $("#app").classList.toggle("on", app);
   $("#admin").classList.toggle("on", adm);
